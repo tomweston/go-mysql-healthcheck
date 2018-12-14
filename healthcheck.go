@@ -18,7 +18,7 @@ func doEvery(d time.Duration, f func(time.Time)) {
 	}
 }
 
-func pingmysql(t time.Time) {
+func pingMySQL(t time.Time) {
 
 	// Get DB details from ENV
 	user := os.Getenv("MYSQL_USER")
@@ -47,6 +47,6 @@ func pingmysql(t time.Time) {
 
 func main() {
 
-	doEvery(100*time.Millisecond, pingmysql)
+	doEvery(100*time.Millisecond, pingMySQL)
 
 }
