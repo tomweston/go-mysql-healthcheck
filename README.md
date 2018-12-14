@@ -1,14 +1,13 @@
 # go-mysql-healthcheck
-Golang MySQL Healthcheck
 
-Instructions:
+## Instructions
 
-Git Clone
+#### Git Clone
 ```sh
 git clone https://github.com/tomweston/go-mysql-healthcheck.git
 cd go-mysql-querytimer
 ```
-Run
+#### Run
 ```sh
 source mysql.env
 go get ./...
