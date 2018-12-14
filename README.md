@@ -1,6 +1,6 @@
 # go-mysql-healthcheck
 
-Pings a MySQL target using a the go-sql-driver at a defined rate
+Pings a MySQL target using a the **go-sql-driver** at a defined rate
 
 ## Instructions
 
