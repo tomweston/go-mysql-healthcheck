@@ -3,14 +3,18 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"net/http"
 	"os"
+	"os/exec"
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 )
 
-var db *sql.DB
-var err error
+var (
+	db  *sql.DB
+	err error
+)
 
 func doEvery(d time.Duration, f func(time.Time)) {
 	for x := range time.Tick(d) {
@@ -36,6 +40,7 @@ func pingMySQL(t time.Time) {
 	err = db.Ping()
 	if err != nil {
 		fmt.Println("[ping failed]", host, "[error]", err.Error())
+		exec.Command("/bin/sh", "-c", "echo "+err.Error()+" "+host+" >> ./logs/error.log").Run()
 	}
 	// Go uses odd an odd time formating reference date: https://flaviocopes.com/go-date-time-format/
 	fmt.Println("[success]", "[", t.Format("2006-01-02 15:04:05"), "]", "[", host, "]")
@@ -47,6 +52,12 @@ func pingMySQL(t time.Time) {
 
 func main() {
 
-	doEvery(100*time.Millisecond, pingMySQL)
+	go doEvery(100*time.Millisecond, pingMySQL)
+
+	// Serve logs
+	http.Handle("/", http.FileServer(http.Dir("./logs")))
+	if err := http.ListenAndServe(":8080", nil); err != nil {
+		panic(err)
+	}
 
 }
